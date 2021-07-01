@@ -8,7 +8,7 @@ const HeaderStyles = styled.header`
     background-color: #ffffff;
     .container {
         width: 100%;
-        padding: 2.5rem 0 5rem;
+        padding: 3.5rem 0 4.5rem;
         .logo {
             position: relative;
             width: 12rem;

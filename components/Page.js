@@ -9,6 +9,9 @@ const GlobalStyles = createGlobalStyle`
         --black: #222222;
         --orange: #EF7310;
         --grey: #555555;
+        --blue: #0066ff;
+        --purple: #3366ff;
+        --lightPurple: rgba(51, 99, 255, 0.7);
     }
 
     body{
@@ -16,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
         margin: 0;
         font-family: 'Roboto', Arial, Helvetica, sans-serif;
         font-size: 1.5rem;
-
+        background-color: #f3f3f3;
     }
 
     a{
@@ -35,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
 const InnerStyles = styled.div`
     position: relative;
     margin: 0 auto;
-    max-width: 1300px;
+    max-width: 1320px;
     min-height: calc(100vh - 12rem);
 `;
 
