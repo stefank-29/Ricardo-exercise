@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
+import { format } from 'date-fns';
 
 const CardStyles = styled.div`
     margin: 2.5rem;
+    margin-left: 0;
     width: 20rem;
     background-color: #fefefe;
     border-radius: 5px;
-    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     .image-container {
         position: relative;
@@ -28,7 +30,7 @@ const CardStyles = styled.div`
             font-weight: 500;
         }
         .end-date {
-            margin: 0.5rem 0;
+            margin: 1rem 0;
             font-size: 1.3rem;
             line-height: 1.4;
             .label {
@@ -68,7 +70,11 @@ export default function Card({
                 <p className="title">{title}</p>
                 <div className="end-date">
                     <span className="label">Ending on:</span>
-                    <span className="date">{endDate}</span>
+                    <span className="date">
+                        {format(new Date(endDate), 'yyyy-MM-dd')}
+                        {' at '}
+                        {format(new Date(endDate), 'hh:mm:ss')}
+                    </span>
                 </div>
                 <div className="price">
                     <span>{price}</span>

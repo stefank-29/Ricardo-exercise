@@ -31,9 +31,7 @@ export default function SearchPage({ articles, totalCount }) {
     return (
         <SearchPageStyles>
             <p className="total">{`${totalCount} results`}</p>
-            <ArticlesStyles>
-                <Card />
-            </ArticlesStyles>
+            <ArticlesStyles>{}</ArticlesStyles>
         </SearchPageStyles>
     );
 }
