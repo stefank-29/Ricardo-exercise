@@ -12,6 +12,7 @@
         "@babel/core": "^7.14.6",
         "@babel/eslint-parser": "^7.14.5",
         "@fortawesome/react-fontawesome": "^0.1.14",
+        "axios": "^0.21.1",
         "babel-plugin-transform-require-ignore": "^0.1.1",
         "next": "11.0.1",
         "react": "17.0.2",
@@ -26,6 +27,7 @@
         "babel-plugin-styled-components": "^1.12.0",
         "eslint": "7.29.0",
         "eslint-config-next": "11.0.1",
+        "eslint-plugin-import": "^2.23.4",
         "prettier": "^2.2.1"
     }
 }

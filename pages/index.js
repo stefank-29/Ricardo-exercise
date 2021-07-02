@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import styled from 'styled-components';
 
-const HomeStyles = styled.div`
+const HomeStyles = styled.main`
     width: 100%;
     display: flex;
     flex-direction: column;

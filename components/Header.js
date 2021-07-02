@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const HeaderStyles = styled.header`
     position: relative;
@@ -22,13 +23,15 @@ export default function Header() {
     return (
         <HeaderStyles>
             <div className="container">
-                <div className="logo">
-                    <Image
-                        src="/logo.svg"
-                        alt="Logo of Ricardo"
-                        layout="fill"
-                    />
-                </div>
+                <Link href="/">
+                    <div className="logo">
+                        <Image
+                            src="/logo.svg"
+                            alt="Logo of Ricardo"
+                            layout="fill"
+                        />
+                    </div>
+                </Link>
             </div>
         </HeaderStyles>
     );

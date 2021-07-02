@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 
@@ -51,3 +52,7 @@ export default function Page({ children }) {
         </div>
     );
 }
+
+Page.propTypes = {
+    children: PropTypes.any,
+};
