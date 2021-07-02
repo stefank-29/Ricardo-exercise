@@ -17,6 +17,9 @@ const HeaderStyles = styled.header`
             cursor: pointer;
         }
     }
+    @media all and (max-width: 1320px) {
+        padding: 0 2rem;
+    }
 `;
 
 export default function Header() {

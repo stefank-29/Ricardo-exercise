@@ -4,9 +4,8 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 
 const CardStyles = styled.div`
-    margin: 2.5rem;
     margin-left: 0;
-    width: 20rem;
+    width: 100%;
     background-color: #fefefe;
     border-radius: 5px;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
@@ -14,9 +13,11 @@ const CardStyles = styled.div`
     .image-container {
         position: relative;
         width: 100%;
-        height: 20rem;
+        height: 22rem;
+        background-color: #f3f3f3;
+        border-radius: 5px 5px 0 0;
         .image {
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 5px 5px 0 0;
         }
     }

@@ -19,19 +19,29 @@ const SearchPageStyles = styled.main`
 
 const ArticlesStyles = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    padding-bottom: 3rem;
 `;
 
 export default function SearchPage({ articles, totalCount }) {
     const router = useRouter();
     const { text } = router.query;
-    console.log(articles);
-    console.log(totalCount);
 
     return (
         <SearchPageStyles>
             <p className="total">{`${totalCount} results`}</p>
-            <ArticlesStyles>{}</ArticlesStyles>
+            <ArticlesStyles>
+                {articles.map((article) => (
+                    <Card
+                        key={article.id}
+                        endDate={article.endDate}
+                        price={article.buyNowPrice}
+                        imageUrl={article.imageUrl}
+                        title={article.title}
+                    />
+                ))}
+            </ArticlesStyles>
         </SearchPageStyles>
     );
 }
