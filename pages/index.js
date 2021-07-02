@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const HomeStyles = styled.div`
     width: 100%;
@@ -54,8 +55,12 @@ const ButtonStyles = styled.button`
     background-color: #e6ecff;
     transition: background 0.3s;
     cursor: pointer;
-    :hover {
+    :hover:not(:disabled) {
         background-color: #ccd8ff;
+    }
+    :disabled {
+        cursor: default;
+        opacity: 0.75;
     }
     .icon {
         margin-right: 1rem;
@@ -64,13 +69,24 @@ const ButtonStyles = styled.button`
 
 export default function Home() {
     const [searchQuery, setSearchQuery] = useState('');
+    const [disabled, setDisabled] = useState(true);
+
+    const router = useRouter();
 
     function handleChange(e) {
+        if (e.target.value !== '') {
+            setDisabled(false);
+        } else {
+            setDisabled(true);
+        }
+
         setSearchQuery(e.target.value);
     }
 
     function handleSubmit(e) {
         e.preventDefault();
+
+        router.push(`/search/${searchQuery}`);
     }
 
     return (
@@ -84,7 +100,7 @@ export default function Home() {
                         onChange={handleChange}
                     />
                 </fieldset>
-                <ButtonStyles className="submit-btn">
+                <ButtonStyles className="submit-btn" disabled={disabled}>
                     <FaSearch className="icon" />
                     <span>Search</span>
                 </ButtonStyles>
