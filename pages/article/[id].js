@@ -1,11 +1,15 @@
 import axios from 'axios';
-import styled from 'styled-components';
 import Image from 'next/image';
+import styled from 'styled-components';
+import DOMPurify from 'isomorphic-dompurify';
+import { useRef, useLayoutEffect } from 'react';
+import { useState } from 'react/cjs/react.development';
+import PropTypes from 'prop-types';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
     display: flex;
-    padding-top: 4rem;
+    padding: 4rem 0;
 `;
 
 const ImageStyles = styled.div`
@@ -28,54 +32,78 @@ const ImageStyles = styled.div`
 `;
 
 const InfoStyles = styled.div`
+    position: relative;
     flex: 1;
+    max-width: 50%;
+    max-height: ${(props) => props.maxHeight};
+    overflow: hidden;
     margin-left: 3rem;
     padding: 3rem;
-    background-color: #f3f3f3;
+    padding-bottom: ${(props) => props.paddingBottom};
+    background-color: #f7f7f7;
     border-radius: 5px;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
-    .header {
-        margin-bottom: 5rem;
-        .title {
-            font-size: 3.4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+    .details-container {
+        overflow-x: auto;
+        .header {
+            margin-bottom: 5rem;
+            .title {
+                font-size: 3.4rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+            }
+            .subtitle {
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
+            }
         }
-        .subtitle {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-        }
-    }
-    .sell-info {
-        display: block;
-        ::before {
-            content: '';
+        .sell-info {
             display: block;
-            height: 2px;
-            width: 85%;
-            margin: 0 auto 3rem;
-            background-color: var(--lightGrey);
-        }
-        ::after {
-            content: '';
-            display: block;
-            height: 2px;
-            width: 85%;
-            margin: 3rem auto 0;
-            background-color: var(--lightGrey);
-        }
-        .label {
-            font-weight: 700;
-        }
-        .seller {
-            margin: 0.5rem 0;
-        }
-        .price {
-            margin: 0.5rem 0;
+            ::before {
+                content: '';
+                display: block;
+                height: 2px;
+                width: 85%;
+                margin: 0 auto 3rem;
+                background-color: var(--lightGrey);
+            }
+            ::after {
+                content: '';
+                display: block;
+                height: 2px;
+                width: 85%;
+                margin: 3rem auto 0;
+                background-color: var(--lightGrey);
+            }
+            .label {
+                font-weight: 700;
+            }
+            .seller {
+                margin: 0.5rem 0;
+            }
+            .price {
+                margin: 0.5rem 0;
+            }
         }
     }
     .description {
         padding-top: 2rem;
+    }
+    .show-more {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: #fefefe;
+        box-shadow: ${(props) => props.shadow};
+        span {
+            padding: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
     }
 `;
 
@@ -89,6 +117,22 @@ export default function DetailsPage({
     sellerId,
     sellerName,
 }) {
+    const [isOverflowing, setIsOverflowing] = useState(false);
+    const [showMore, setShowMore] = useState(false);
+
+    const cleanedHtml = DOMPurify.sanitize(descriptionHtml);
+    const detailsRef = useRef();
+
+    useLayoutEffect(() => {
+        if (detailsRef.current.clientHeight < detailsRef.current.scrollHeight) {
+            setIsOverflowing(true);
+        }
+    }, [detailsRef]);
+
+    function handleOverflow() {
+        setShowMore(!showMore);
+    }
+
     return (
         <DetailsPageStyles>
             <ImageStyles>
@@ -99,25 +143,43 @@ export default function DetailsPage({
                     layout="fill"
                 />
             </ImageStyles>
-            <InfoStyles>
-                <div className="header">
-                    <div className="title">{title}</div>
-                    {subtitle && <div className="subtitle">{subtitle}</div>}
-                </div>
-                <div className="sell-info">
-                    <div className="seller">
-                        <span className="label">Seller: </span>
-                        <span>{sellerName}</span>
+            <InfoStyles
+                ref={detailsRef}
+                maxHeight={showMore ? 'auto' : '70rem'}
+                shadow={
+                    showMore ? '' : '0 -20px 35px 15px rgba(255, 255, 255, 0.9)'
+                }
+                paddingBottom={isOverflowing ? '6rem' : '3rem'}
+            >
+                <div className="details-container">
+                    <div className="header">
+                        <div className="title">{title}</div>
+                        {subtitle && <div className="subtitle">{subtitle}</div>}
                     </div>
-                    <div className="price">
-                        <span className="label">Price: </span>
-                        <span>{price}</span>
+                    <div className="sell-info">
+                        <div className="seller">
+                            <span className="label">Seller: </span>
+                            <span>{sellerName}</span>
+                        </div>
+                        {price && (
+                            <div className="price">
+                                <span className="label">Price: </span>
+                                <span>{price}</span>
+                            </div>
+                        )}
                     </div>
+                    <div
+                        className="description"
+                        dangerouslySetInnerHTML={{
+                            __html: cleanedHtml,
+                        }}
+                    ></div>
                 </div>
-                <div
-                    className="description"
-                    dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-                ></div>
+                {isOverflowing && (
+                    <div className="show-more" onClick={handleOverflow}>
+                        <span>SHOW MORE</span>
+                    </div>
+                )}
             </InfoStyles>
         </DetailsPageStyles>
     );
@@ -131,8 +193,6 @@ export async function getServerSideProps(context) {
     const { data: seller } = await axios.get(
         `https://www.ricardo.ch/api/frontend/recruitment/user?userId=${articleDetails.sellerId}&apiToken=${process.env.apiToken}`
     );
-
-    console.log(articleDetails.descriptionHtml);
 
     return {
         props: {
@@ -152,4 +212,13 @@ export async function getServerSideProps(context) {
 }
 
 // TODO
-DetailsPage.propTypes = {};
+DetailsPage.propTypes = {
+    articleId: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    price: PropTypes.number,
+    descriptionHtml: PropTypes.string,
+    imageUrl: PropTypes.string,
+    sellerId: PropTypes.number,
+    sellerName: PropTypes.string,
+};

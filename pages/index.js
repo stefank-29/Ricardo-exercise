@@ -22,7 +22,7 @@ const FormStyles = styled.form`
         border: 2px solid var(--lightPurple);
         border-radius: 4px;
         padding: 0.5rem 1rem;
-        background-color: #fefefe77;
+        background-color: #fefefeaa;
         :hover,
         :focus-within {
             box-shadow: 0 0 4px 1px #668aff55;
@@ -38,6 +38,9 @@ const FormStyles = styled.form`
             background: none;
             border: none;
             outline: none;
+            ::placeholder {
+                font-weight: 700;
+            }
         }
     }
 `;
@@ -95,9 +98,10 @@ export default function Home() {
                 <fieldset className="input-container">
                     <legend>Search text</legend>
                     <input
+                        onChange={handleChange}
+                        placeholder="Search articles"
                         type="text"
                         value={searchQuery}
-                        onChange={handleChange}
                     />
                 </fieldset>
                 <ButtonStyles className="submit-btn" disabled={disabled}>
