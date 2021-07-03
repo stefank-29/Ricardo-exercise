@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -25,9 +24,6 @@ const ArticlesStyles = styled.div`
 `;
 
 export default function SearchPage({ articles, totalCount }) {
-    const router = useRouter();
-    const { text } = router.query;
-
     return (
         <SearchPageStyles>
             <p className="total">{`${totalCount} results`}</p>
@@ -35,6 +31,7 @@ export default function SearchPage({ articles, totalCount }) {
                 {articles.map((article) => (
                     <Card
                         key={article.id}
+                        articleId={article.id}
                         endDate={article.endDate}
                         price={article.buyNowPrice}
                         imageUrl={article.imageUrl}
@@ -47,14 +44,14 @@ export default function SearchPage({ articles, totalCount }) {
 }
 
 export async function getServerSideProps(context) {
-    const res = await axios.get(
+    const { data } = await axios.get(
         `https://www.ricardo.ch/api/frontend/recruitment/search?searchText=${context.params.text}&apiToken=${process.env.apiToken}`
     );
 
     return {
         props: {
-            articles: res.data.articles,
-            totalCount: res.data.totalCount,
+            articles: data.articles,
+            totalCount: data.totalCount,
         },
     };
 }

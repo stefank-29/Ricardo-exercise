@@ -18,7 +18,7 @@ const FormStyles = styled.form`
     .input-container {
         flex: 1;
         margin-right: 2rem;
-        margin-top: -0.6rem;
+        margin-bottom: 0.6rem;
         border: 2px solid var(--lightPurple);
         border-radius: 4px;
         padding: 0.5rem 1rem;

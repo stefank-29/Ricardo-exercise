@@ -10,6 +10,7 @@ const GlobalStyles = createGlobalStyle`
         --black: #222222;
         --orange: #EF7310;
         --grey: #555555;
+        --lightGrey: #d9d9d9;
         --blue: #0066ff;
         --purple: #3366ff;
         --lightPurple: rgba(51, 99, 255, 0.7);
@@ -26,9 +27,6 @@ const GlobalStyles = createGlobalStyle`
     a{
         color: inherit;
         text-decoration: none;
-        :hover{
-            text-decoration: underline;
-        }
     }
 
     *, *:before, *:after{
@@ -42,6 +40,7 @@ const InnerStyles = styled.div`
     max-width: 1320px;
     min-height: calc(100vh - 12rem);
     @media all and (max-width: 1320px) {
+        max-width: 900px;
         width: 100%;
         padding: 2rem;
     }
