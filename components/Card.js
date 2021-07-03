@@ -4,12 +4,17 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 
 const CardStyles = styled.div`
+    display: flex;
+    flex-direction: column;
     margin-left: 0;
     width: 100%;
     background-color: #fefefe;
     border-radius: 5px;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+    :hover {
+        box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.2);
+    }
     .image-container {
         position: relative;
         width: 100%;
@@ -22,11 +27,13 @@ const CardStyles = styled.div`
         }
     }
     .article-info {
+        flex: 1;
         display: flex;
         flex-direction: column;
+        justify-content: flex-end;
         padding: 1rem;
         .title {
-            margin: 0.5rem 0;
+            margin: 0.5rem 0 auto;
             font-size: 1.6rem;
             font-weight: 500;
         }
@@ -42,6 +49,7 @@ const CardStyles = styled.div`
             }
         }
         .price {
+            height: 1.6rem;
             font-size: 1.6rem;
             .currency {
                 margin-left: 0.3rem;
@@ -50,13 +58,7 @@ const CardStyles = styled.div`
     }
 `;
 
-export default function Card({
-    id,
-    title = 'Fifa E-Football Anhänger',
-    endDate = '2021-07-02T10:41:00Z',
-    imageUrl = 'https://img.ricardostatic.ch/t_200x150/pl/1146437802/6/1/fifa-e-football-anhanger.jpg',
-    price = 5,
-}) {
+export default function Card({ id, title, endDate, imageUrl, price }) {
     return (
         <CardStyles>
             <div className="image-container">
@@ -79,7 +81,7 @@ export default function Card({
                 </div>
                 <div className="price">
                     <span>{price}</span>
-                    <span className="currency">CHF</span>
+                    {price && <span className="currency">CHF</span>}
                 </div>
             </div>
         </CardStyles>

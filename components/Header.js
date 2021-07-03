@@ -5,10 +5,10 @@ import Link from 'next/link';
 const HeaderStyles = styled.header`
     position: relative;
     width: 100%;
-    padding: 0 30rem;
     background-color: #ffffff;
     .container {
-        width: 100%;
+        margin: 0 auto;
+        max-width: 1320px;
         padding: 3.5rem 0 4.5rem;
         .logo {
             position: relative;
