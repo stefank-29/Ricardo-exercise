@@ -1,10 +1,11 @@
 import axios from 'axios';
-import Image from 'next/image';
-import styled from 'styled-components';
 import DOMPurify from 'isomorphic-dompurify';
-import { useRef, useLayoutEffect } from 'react';
-import { useState } from 'react/cjs/react.development';
+import Image from 'next/image';
 import PropTypes from 'prop-types';
+import { useLayoutEffect, useRef } from 'react';
+import { useState } from 'react/cjs/react.development';
+import styled from 'styled-components';
+import { useBookmarks } from '../../lib/bookmarksState';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -64,6 +65,9 @@ const InfoStyles = styled.div`
             }
             .price {
                 margin: 0.5rem 0;
+                .currency {
+                    margin-left: 0.1rem;
+                }
             }
         }
     }
@@ -101,6 +105,8 @@ export default function DetailsPage({
     const [isOverflowing, setIsOverflowing] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+
+    const { addBookmark } = useBookmarks();
 
     const cleanedHtml = DOMPurify.sanitize(descriptionHtml);
     const detailsRef = useRef();
@@ -162,6 +168,7 @@ export default function DetailsPage({
                             <div className="price">
                                 <span className="label">Price: </span>
                                 <span>{price}</span>
+                                <span className="currency">CHF</span>
                             </div>
                         )}
                     </div>
