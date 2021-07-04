@@ -12,25 +12,6 @@ const DetailsPageStyles = styled.div`
     padding: 4rem 0;
 `;
 
-const ImageStyles = styled.div`
-    position: relative;
-    flex: 1;
-    height: 55rem;
-    overflow: hidden;
-    background-color: #f3f3f3;
-    border-radius: 5px;
-    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
-    .image {
-        border-radius: 5px;
-        object-fit: contain;
-        transition: all 0.5s;
-        :hover {
-            object-fit: cover;
-            transform: scale(1.1);
-        }
-    }
-`;
-
 const InfoStyles = styled.div`
     position: relative;
     flex: 1;
@@ -119,6 +100,7 @@ export default function DetailsPage({
 }) {
     const [isOverflowing, setIsOverflowing] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
 
     const cleanedHtml = DOMPurify.sanitize(descriptionHtml);
     const detailsRef = useRef();
@@ -133,15 +115,30 @@ export default function DetailsPage({
         setShowMore(!showMore);
     }
 
+    function zoomPicture(e) {
+        const walk = 200;
+        let { offsetWidth: width, offsetHeight: height } = e.target;
+        let { offsetX: x, offsetY: y } = e.nativeEvent;
+
+        setCoordinates({
+            x: -((x / width) * walk - walk / 2),
+            y: -((y / height) * walk - walk / 2),
+        });
+    }
+
     return (
         <DetailsPageStyles>
-            <ImageStyles>
-                <Image
-                    className="image"
-                    src={imageUrl}
-                    alt="Article image"
-                    layout="fill"
-                />
+            <ImageStyles
+                translateImg={`translate(${coordinates.x}px, ${coordinates.y}px)`}
+            >
+                <div className="image-container" onMouseMove={zoomPicture}>
+                    <Image
+                        className="image"
+                        src={imageUrl}
+                        alt="Article image"
+                        layout="fill"
+                    />
+                </div>
             </ImageStyles>
             <InfoStyles
                 ref={detailsRef}
@@ -211,7 +208,34 @@ export async function getServerSideProps(context) {
     };
 }
 
-// TODO
+const ImageStyles = styled.div.attrs((props) => ({
+    translateImg: props.translateImg,
+}))`
+    position: relative;
+    flex: 1;
+    height: 55rem;
+    overflow: hidden;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
+    z-index: 3;
+    .image-container {
+        width: 100%;
+        height: 100%;
+        :hover {
+            transform: scale(1.5) ${(props) => props.translateImg};
+        }
+        .image {
+            border-radius: 5px;
+            object-fit: contain;
+            transition: all 0.5s;
+            :hover {
+                object-fit: cover;
+            }
+        }
+    }
+`;
+
 DetailsPage.propTypes = {
     articleId: PropTypes.string,
     title: PropTypes.string,
