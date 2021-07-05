@@ -112,7 +112,6 @@ export default function Card({ articleId, title, endDate, imageUrl, price }) {
                                 addBookmark({
                                     articleId,
                                     title,
-                                    endDate,
                                     imageUrl,
                                     price,
                                 });
