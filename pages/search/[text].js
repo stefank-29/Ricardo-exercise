@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Card from '../../components/Card';
+import { useRouter } from 'next/router';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -45,7 +46,9 @@ export default function SearchPage({ articles, totalCount }) {
 
 export async function getServerSideProps(context) {
     const { data } = await axios.get(
-        `https://www.ricardo.ch/api/frontend/recruitment/search?searchText=${context.params.text}&apiToken=${process.env.apiToken}`
+        `https://www.ricardo.ch/api/frontend/recruitment/search?searchText=${encodeURI(
+            context.params.text
+        )}&apiToken=${process.env.NEXT_PUBLIC_API_TOKEN}`
     );
 
     return {

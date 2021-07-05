@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
         --darkGrey: #404040;
         --lightGrey: #d9d9d9;
         --blue: #0066ff;
+        --darkBlue: #0d34bf;
         --purple: #3366ff;
         --lightPurple: rgba(51, 99, 255, 0.7);
     }

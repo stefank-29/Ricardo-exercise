@@ -63,27 +63,6 @@ const InfoStyles = styled.div`
                         margin-left: 0.1rem;
                     }
                 }
-                .bookmark-btn {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 1rem;
-                    width: 14rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    background-color: rgba(239, 115, 16, 0.1);
-                    border: 1px solid var(--lightGrey);
-                    border-radius: 5px;
-                    transition: background 0.3s ease-in-out;
-                    :hover {
-                        background-color: rgba(239, 115, 16, 0.3);
-                    }
-                    .icon {
-                        color: var(--orange);
-                        font-size: 1.7rem;
-                        margin-right: 0.3rem;
-                    }
-                }
             }
         }
     }
@@ -107,4 +86,26 @@ const InfoStyles = styled.div`
         }
     }
 `;
-export default InfoStyles;
+
+const ButtonStyles = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    width: 14rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: rgba(239, 115, 16, 0.1);
+    border: 1px solid var(--lightGrey);
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+    :hover {
+        background-color: rgba(239, 115, 16, 0.3);
+    }
+    .icon {
+        color: var(--orange);
+        font-size: 1.7rem;
+        margin-right: 0.3rem;
+    }
+`;
+export { InfoStyles, ButtonStyles };

@@ -6,83 +6,8 @@ import Link from 'next/link';
 import { useBookmarks } from '../lib/bookmarksState';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
-
-const CardStyles = styled.div`
-    display: flex;
-    .container {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        margin-left: 0;
-        width: 100%;
-        background-color: #fefefe;
-        border-radius: 5px;
-        box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-        :hover {
-            box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.2);
-        }
-        .bookmark {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            color: #ffffff;
-            font-size: 2rem;
-            z-index: 10;
-            user-select: none;
-            :hover {
-                color: var(--orange);
-            }
-            &.checked {
-                color: var(--orange);
-                :hover {
-                }
-            }
-        }
-
-        .image-container {
-            position: relative;
-            width: 100%;
-            height: 22rem;
-            background-color: #e3e3e3;
-            border-radius: 5px 5px 0 0;
-            .image {
-                object-fit: contain;
-                border-radius: 5px 5px 0 0;
-            }
-        }
-        .article-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1rem;
-            .title {
-                margin: 0.5rem 0 auto;
-                font-size: 1.6rem;
-                font-weight: 500;
-            }
-            .end-date {
-                margin: 1rem 0;
-                font-size: 1.3rem;
-                line-height: 1.4;
-                .label {
-                    color: var(--grey);
-                    margin-right: 0.3rem;
-                }
-                .date {
-                }
-            }
-            .price {
-                height: 1.6rem;
-                font-size: 1.6rem;
-                .currency {
-                    margin-left: 0.3rem;
-                }
-            }
-        }
-    }
-`;
+import axios from 'axios';
+import CardStyles from '../styles/CardStyles';
 
 export default function Card({ articleId, title, endDate, imageUrl, price }) {
     const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
@@ -107,13 +32,21 @@ export default function Card({ articleId, title, endDate, imageUrl, price }) {
                     ) : (
                         <FaRegBookmark
                             className="bookmark"
-                            onClick={(e) => {
+                            onClick={async (e) => {
                                 e.stopPropagation();
+                                const { data: article } = await axios.get(
+                                    `https://www.ricardo.ch/api/frontend/recruitment/article-details?articleId=${articleId}&apiToken=${process.env.NEXT_PUBLIC_API_TOKEN}`
+                                );
+                                const { data: seller } = await axios.get(
+                                    `https://www.ricardo.ch/api/frontend/recruitment/user?userId=${article.sellerId}&apiToken=${process.env.NEXT_PUBLIC_API_TOKEN}`
+                                );
+
                                 addBookmark({
-                                    articleId,
-                                    title,
-                                    imageUrl,
-                                    price,
+                                    articleId: article.id,
+                                    title: article.title,
+                                    price: article.price,
+                                    imageUrl: article.imageUrl,
+                                    sellerName: seller.name,
                                 });
                             }}
                         />

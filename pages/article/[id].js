@@ -7,7 +7,7 @@ import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useBookmarks } from '../../lib/bookmarksState';
 import ImageStyles from '../../styles/ImageStyles';
-import InfoStyles from '../../styles/InfoStyles';
+import { InfoStyles, ButtonStyles } from '../../styles/InfoStyles';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -100,16 +100,16 @@ export default function DetailsPage({
                                     </div>
                                 )}
                             </div>
-                            <button
-                                className="bookmark-btn"
+                            <ButtonStyles
                                 onClick={() =>
                                     bookmarked
                                         ? removeBookmark(articleId)
                                         : addBookmark({
                                               articleId,
                                               title,
-                                              imageUrl,
                                               price,
+                                              imageUrl,
+                                              sellerName,
                                           })
                                 }
                             >
@@ -124,7 +124,7 @@ export default function DetailsPage({
                                         <span>Bookmark</span>
                                     </>
                                 )}
-                            </button>
+                            </ButtonStyles>
                         </div>
                     </div>
                     <div
@@ -146,11 +146,11 @@ export default function DetailsPage({
 
 export async function getServerSideProps(context) {
     const { data: articleDetails } = await axios.get(
-        `https://www.ricardo.ch/api/frontend/recruitment/article-details?articleId=${context.params.id}&apiToken=${process.env.apiToken}`
+        `https://www.ricardo.ch/api/frontend/recruitment/article-details?articleId=${context.params.id}&apiToken=${process.env.NEXT_PUBLIC_API_TOKEN}`
     );
 
     const { data: seller } = await axios.get(
-        `https://www.ricardo.ch/api/frontend/recruitment/user?userId=${articleDetails.sellerId}&apiToken=${process.env.apiToken}`
+        `https://www.ricardo.ch/api/frontend/recruitment/user?userId=${articleDetails.sellerId}&apiToken=${process.env.NEXT_PUBLIC_API_TOKEN}`
     );
 
     return {
