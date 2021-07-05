@@ -88,6 +88,7 @@ const HeaderStyles = styled.div`
     }
     .seller {
         flex: 1;
+        margin-right: 2rem;
     }
     .price {
         flex: 1;

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import Card from '../../components/Card';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import Pagination from '../../components/Pagination';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -25,21 +27,46 @@ const ArticlesStyles = styled.div`
 `;
 
 export default function SearchPage({ articles, totalCount }) {
+    const [page, setPage] = useState(1);
+    const [numOfPages, setNumOfPages] = useState();
+
+    const router = useRouter();
+
+    const articlesPerPage = 20;
+
+    useEffect(() => {
+        const pagesNum = Math.ceil(articles.length / articlesPerPage);
+        setNumOfPages(pagesNum);
+        if (router.query.page === undefined) {
+            setPage(1);
+        } else {
+            const pageNum = parseInt(router.query.page);
+            if (pageNum > pagesNum) {
+                setPage(numOfPages);
+            } else {
+                setPage(pageNum);
+            }
+        }
+    });
+
     return (
         <SearchPageStyles>
             <p className="total">{`${totalCount} results`}</p>
             <ArticlesStyles>
-                {articles.map((article) => (
-                    <Card
-                        key={article.id}
-                        articleId={article.id}
-                        endDate={article.endDate}
-                        price={article.buyNowPrice}
-                        imageUrl={article.imageUrl}
-                        title={article.title}
-                    />
-                ))}
+                {articles
+                    .slice((page - 1) * articlesPerPage, page * articlesPerPage)
+                    .map((article) => (
+                        <Card
+                            key={article.id}
+                            articleId={article.id}
+                            endDate={article.endDate}
+                            price={article.buyNowPrice}
+                            imageUrl={article.imageUrl}
+                            title={article.title}
+                        />
+                    ))}
             </ArticlesStyles>
+            <Pagination numOfPages={numOfPages} currPage={page} />
         </SearchPageStyles>
     );
 }
