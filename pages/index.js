@@ -89,7 +89,7 @@ export default function Home() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        router.push(`/search/${encodeURIComponent(searchQuery)}`);
+        router.push(`/search/${encodeURIComponent(searchQuery)}/`);
     }
 
     return (
