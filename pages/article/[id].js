@@ -1,14 +1,14 @@
 import axios from 'axios';
 import DOMPurify from 'isomorphic-dompurify';
+import Head from 'next/head';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useBookmarks } from '../../lib/bookmarksState';
 import ImageStyles from '../../styles/ImageStyles';
-import { InfoStyles, ButtonStyles } from '../../styles/InfoStyles';
-import Head from 'next/head';
+import { ButtonStyles, InfoStyles } from '../../styles/InfoStyles';
 
 const DetailsPageStyles = styled.div`
     width: 100%;

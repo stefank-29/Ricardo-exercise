@@ -1,18 +1,18 @@
+import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import styled from 'styled-components';
 import Card from '../../components/Card';
-import Pagination from '../../components/Pagination';
-import { FaChevronDown } from 'react-icons/fa';
-import HeaderStyles from '../../styles/SearchHeaderStyles';
 import Dropdown from '../../components/Dropdown';
-import { sortings } from '../../lib/dropdownItems';
-import Slider from '@material-ui/core/Slider';
-import useDidMountEffect from '../../lib/useDidMountEffect';
-import Head from 'next/head';
 import Message from '../../components/Message';
+import Pagination from '../../components/Pagination';
+import { sortings } from '../../lib/dropdownItems';
+import useDidMountEffect from '../../lib/useDidMountEffect';
+import HeaderStyles from '../../styles/SearchHeaderStyles';
 
 const SearchPageStyles = styled.main`
     width: 100%;

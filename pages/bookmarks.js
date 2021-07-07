@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useBookmarks } from '../lib/bookmarksState';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { FaBookmark, FaExternalLinkAlt } from 'react-icons/fa';
-import { ButtonStyles } from '../styles/InfoStyles';
-import BookmarkStyles from '../styles/BookmarkStyles';
-import Head from 'next/head';
+import styled from 'styled-components';
 import Message from '../components/Message';
+import { useBookmarks } from '../lib/bookmarksState';
+import BookmarkStyles from '../styles/BookmarkStyles';
+import { ButtonStyles } from '../styles/InfoStyles';
 
 const BookmarksPageStyles = styled.main`
     width: 100%;
