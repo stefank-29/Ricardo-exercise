@@ -16,6 +16,7 @@ const CarouselStyles = styled.div`
             width: 100%;
             height: 100%;
             display: flex;
+            transition: all 1s ease-in-out;
             transform: translateX(${(props) => props.translate + 'px'});
         }
         :hover {

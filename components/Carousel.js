@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import CarouselStyles from '../styles/CarouselStyles';
 import Card from './Card';
 
 export default function Carousel({ items, title }) {
     const [translate, setTranslate] = useState(0);
+
+    const carouselRef = useRef();
 
     const move = 900;
 
@@ -19,8 +21,10 @@ export default function Carousel({ items, title }) {
 
     function moveRight() {
         const translateLeft = translate - move;
-        if (translateLeft < -(items.length - 5) * 240 + 80) {
-            setTranslate(-(items.length - 5) * 240 + 80);
+        const limit =
+            -carouselRef.current.scrollWidth + carouselRef.current.offsetWidth;
+        if (translateLeft < limit) {
+            setTranslate(limit);
         } else {
             setTranslate(translateLeft);
         }
@@ -37,7 +41,7 @@ export default function Carousel({ items, title }) {
                     <FaChevronRight />
                 </div>
 
-                <div className="carousel">
+                <div className="carousel" ref={carouselRef}>
                     {items.map((item) => (
                         <Card
                             key={item.articleId}
