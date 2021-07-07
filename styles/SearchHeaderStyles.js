@@ -9,6 +9,30 @@ const HeaderStyles = styled.div`
         color: var(--grey);
         margin-bottom: 3rem;
     }
+    .filter {
+        display: flex;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        margin-left: auto;
+        margin-right: 5rem;
+        .label {
+            margin-right: 2rem;
+        }
+        .slider {
+            width: 20rem;
+        }
+        .MuiSlider-colorPrimary {
+            color: var(--darkBlue);
+        }
+        .MuiSlider-valueLabel {
+            font-size: 1rem;
+        }
+        .MuiSlider-markLabel {
+            font-size: 1.5rem;
+            color: var(--grey);
+        }
+    }
     .sort {
         display: flex;
         align-items: center;
