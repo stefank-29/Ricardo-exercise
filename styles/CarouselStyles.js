@@ -8,6 +8,14 @@ const CarouselStyles = styled.div`
     .title {
         font-family: Ubuntu, sans-serif;
     }
+    .info {
+        font-size: 2.5rem;
+        margin: 4rem 0;
+        font-weight: 500;
+    }
+    .message {
+        font-size: 1.8rem;
+    }
     .container {
         width: 100%;
         overflow-x: hidden;

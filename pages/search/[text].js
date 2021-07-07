@@ -11,6 +11,8 @@ import Dropdown from '../../components/Dropdown';
 import { sortings } from '../../lib/dropdownItems';
 import Slider from '@material-ui/core/Slider';
 import useDidMountEffect from '../../lib/useDidMountEffect';
+import Head from 'next/head';
+import Message from '../../components/Message';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -160,64 +162,92 @@ export default function SearchPage({ articles, totalCount }) {
     }, [priceFilter]);
 
     return (
-        <SearchPageStyles>
-            <HeaderStyles>
-                <p className="total">{`${totalCount} results`}</p>
-                <div className="filter">
-                    <span className="label">Price:</span>
-                    <Slider
-                        className="slider"
-                        value={priceFilter}
-                        onChange={handleRangeChange}
-                        valueLabelDisplay="auto"
-                        aria-labelledby="range-slider"
-                        marks={marks}
-                        min={rangeLimit.min}
-                        max={rangeLimit.max}
+        <>
+            <Head>
+                <title>
+                    Ricardo - The largest online marketplace in Switzerland
+                </title>
+            </Head>
+            <SearchPageStyles>
+                {sortedArticles.length > 0 ? (
+                    <>
+                        <HeaderStyles>
+                            <p className="total">{`${totalCount} results`}</p>
+                            <div className="filter">
+                                <span className="label">Price:</span>
+                                <Slider
+                                    className="slider"
+                                    value={priceFilter}
+                                    onChange={handleRangeChange}
+                                    valueLabelDisplay="auto"
+                                    aria-labelledby="range-slider"
+                                    marks={marks}
+                                    min={rangeLimit.min}
+                                    max={rangeLimit.max}
+                                />
+                            </div>
+                            <div
+                                className="sort"
+                                onClick={() => setSortVisible(!sortVisible)}
+                            >
+                                <span className="label">Sorted by:</span>
+                                <div className="select">
+                                    <span className="selected">
+                                        {selectedSort.text}
+                                    </span>
+                                    <FaChevronDown className="arrow" />
+                                    {sortVisible && (
+                                        <Dropdown
+                                            items={sortings}
+                                            onClickOutside={() =>
+                                                setSortVisible(false)
+                                            }
+                                            onItemClick={(item) => {
+                                                if (
+                                                    item.type !==
+                                                    selectedSort.type
+                                                ) {
+                                                    setSelectedSort({
+                                                        text: item.text,
+                                                        type: item.type,
+                                                    });
+                                                }
+                                            }}
+                                            outsideClickIgnoreClass="select"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </HeaderStyles>
+                        <ArticlesStyles>
+                            {sortedArticles
+                                .slice(
+                                    (page - 1) * articlesPerPage,
+                                    page * articlesPerPage
+                                )
+                                .map((article) => (
+                                    <Card
+                                        key={article.id}
+                                        articleId={article.id}
+                                        endDate={article.endDate}
+                                        price={article.buyNowPrice}
+                                        imageUrl={article.imageUrl}
+                                        title={article.title}
+                                    />
+                                ))}
+                        </ArticlesStyles>
+                        <Pagination numOfPages={numOfPages} currPage={page} />{' '}
+                    </>
+                ) : (
+                    <Message
+                        buttonRoute="/"
+                        buttonText="Return to Home"
+                        header={`Sorry, we can't find anything for "${router.query.text}"`}
+                        imageUrl="/not-found.png"
                     />
-                </div>
-                <div
-                    className="sort"
-                    onClick={() => setSortVisible(!sortVisible)}
-                >
-                    <span className="label">Sorted by:</span>
-                    <div className="select">
-                        <span className="selected">{selectedSort.text}</span>
-                        <FaChevronDown className="arrow" />
-                        {sortVisible && (
-                            <Dropdown
-                                items={sortings}
-                                onClickOutside={() => setSortVisible(false)}
-                                onItemClick={(item) => {
-                                    if (item.type !== selectedSort.type) {
-                                        setSelectedSort({
-                                            text: item.text,
-                                            type: item.type,
-                                        });
-                                    }
-                                }}
-                                outsideClickIgnoreClass="select"
-                            />
-                        )}
-                    </div>
-                </div>
-            </HeaderStyles>
-            <ArticlesStyles>
-                {sortedArticles
-                    .slice((page - 1) * articlesPerPage, page * articlesPerPage)
-                    .map((article) => (
-                        <Card
-                            key={article.id}
-                            articleId={article.id}
-                            endDate={article.endDate}
-                            price={article.buyNowPrice}
-                            imageUrl={article.imageUrl}
-                            title={article.title}
-                        />
-                    ))}
-            </ArticlesStyles>
-            <Pagination numOfPages={numOfPages} currPage={page} />
-        </SearchPageStyles>
+                )}
+            </SearchPageStyles>
+        </>
     );
 }
 

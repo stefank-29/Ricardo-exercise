@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { useBookmarks } from '../../lib/bookmarksState';
 import ImageStyles from '../../styles/ImageStyles';
 import { InfoStyles, ButtonStyles } from '../../styles/InfoStyles';
+import Head from 'next/head';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -59,88 +60,101 @@ export default function DetailsPage({
     }
 
     return (
-        <DetailsPageStyles>
-            <ImageStyles
-                translateImg={`translate(${coordinates.x}px, ${coordinates.y}px)`}
-            >
-                <div className="image-container" onMouseMove={zoomPicture}>
-                    <Image
-                        className="image"
-                        src={imageUrl}
-                        alt="Article image"
-                        layout="fill"
-                    />
-                </div>
-            </ImageStyles>
-            <InfoStyles
-                ref={detailsRef}
-                maxHeight={showMore ? 'auto' : '70rem'}
-                shadow={
-                    showMore ? '' : '0 -20px 35px 15px rgba(255, 255, 255, 0.9)'
-                }
-                paddingBottom={isOverflowing ? '6rem' : '3rem'}
-            >
-                <div className="details-container">
-                    <div className="header">
-                        <div className="title">{title}</div>
-                        {subtitle && <div className="subtitle">{subtitle}</div>}
+        <>
+            <Head>
+                <title>{`${title} | Buy on Ricardo`}</title>
+            </Head>
+            <DetailsPageStyles>
+                <ImageStyles
+                    translateImg={`translate(${coordinates.x}px, ${coordinates.y}px)`}
+                >
+                    <div className="image-container" onMouseMove={zoomPicture}>
+                        <Image
+                            className="image"
+                            src={imageUrl}
+                            alt="Article image"
+                            layout="fill"
+                        />
                     </div>
-                    <div className="sell-info">
-                        <div className="container-flex">
-                            <div className="seller-container">
-                                <div className="seller">
-                                    <span className="label">Seller: </span>
-                                    <span>{sellerName}</span>
-                                </div>
-                                {price && (
-                                    <div className="price">
-                                        <span className="label">Price: </span>
-                                        <span>{price}</span>
-                                        <span className="currency">CHF</span>
-                                    </div>
-                                )}
-                            </div>
-                            <ButtonStyles
-                                onClick={() =>
-                                    bookmarked
-                                        ? removeBookmark(articleId)
-                                        : addBookmark({
-                                              articleId,
-                                              title,
-                                              price,
-                                              imageUrl,
-                                              sellerName,
-                                          })
-                                }
-                            >
-                                {bookmarked ? (
-                                    <>
-                                        <FaBookmark className="icon" />
-                                        <span>Bookmarked</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <FaRegBookmark className="icon" />
-                                        <span>Bookmark</span>
-                                    </>
-                                )}
-                            </ButtonStyles>
+                </ImageStyles>
+                <InfoStyles
+                    ref={detailsRef}
+                    maxHeight={showMore ? 'auto' : '70rem'}
+                    shadow={
+                        showMore
+                            ? ''
+                            : '0 -20px 35px 15px rgba(255, 255, 255, 0.9)'
+                    }
+                    paddingBottom={isOverflowing ? '6rem' : '3rem'}
+                >
+                    <div className="details-container">
+                        <div className="header">
+                            <div className="title">{title}</div>
+                            {subtitle && (
+                                <div className="subtitle">{subtitle}</div>
+                            )}
                         </div>
+                        <div className="sell-info">
+                            <div className="container-flex">
+                                <div className="seller-container">
+                                    <div className="seller">
+                                        <span className="label">Seller: </span>
+                                        <span>{sellerName}</span>
+                                    </div>
+                                    {price && (
+                                        <div className="price">
+                                            <span className="label">
+                                                Price:{' '}
+                                            </span>
+                                            <span>{price}</span>
+                                            <span className="currency">
+                                                CHF
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                                <ButtonStyles
+                                    onClick={() =>
+                                        bookmarked
+                                            ? removeBookmark(articleId)
+                                            : addBookmark({
+                                                  articleId,
+                                                  title,
+                                                  price,
+                                                  imageUrl,
+                                                  sellerName,
+                                              })
+                                    }
+                                >
+                                    {bookmarked ? (
+                                        <>
+                                            <FaBookmark className="icon" />
+                                            <span>Bookmarked</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaRegBookmark className="icon" />
+                                            <span>Bookmark</span>
+                                        </>
+                                    )}
+                                </ButtonStyles>
+                            </div>
+                        </div>
+                        <div
+                            className="description"
+                            dangerouslySetInnerHTML={{
+                                __html: cleanedHtml,
+                            }}
+                        ></div>
                     </div>
-                    <div
-                        className="description"
-                        dangerouslySetInnerHTML={{
-                            __html: cleanedHtml,
-                        }}
-                    ></div>
-                </div>
-                {isOverflowing && (
-                    <div className="show-more" onClick={handleOverflow}>
-                        <span>SHOW MORE</span>
-                    </div>
-                )}
-            </InfoStyles>
-        </DetailsPageStyles>
+                    {isOverflowing && (
+                        <div className="show-more" onClick={handleOverflow}>
+                            <span>SHOW MORE</span>
+                        </div>
+                    )}
+                </InfoStyles>
+            </DetailsPageStyles>
+        </>
     );
 }
 

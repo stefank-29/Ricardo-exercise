@@ -5,6 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaBookmark, FaExternalLinkAlt } from 'react-icons/fa';
 import { ButtonStyles } from '../styles/InfoStyles';
+import BookmarkStyles from '../styles/BookmarkStyles';
+import Head from 'next/head';
+import Message from '../components/Message';
 
 const BookmarksPageStyles = styled.main`
     width: 100%;
@@ -16,65 +19,6 @@ const BookmarksPageStyles = styled.main`
         font-size: 4rem;
         font-weight: 500;
         margin-bottom: 3rem;
-    }
-`;
-
-const BookmarkStyles = styled.div`
-    display: flex;
-    align-items: center;
-    min-width: 100%;
-    padding: 2rem;
-    margin: 0.5rem 0;
-    background-color: #fefefe;
-    border: 1px solid var(--lightGrey);
-    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.15);
-    .image-container {
-        position: relative;
-        width: 14rem;
-        height: 14rem;
-        cursor: pointer;
-        margin: 0 1rem;
-        .img {
-            object-fit: contain;
-        }
-    }
-    & > * + :not(.image-container) {
-        flex: 1;
-        margin: 0 1rem;
-    }
-    .article-title {
-        font-size: 1.8rem;
-        font-family: Ubuntu, sans-serif;
-        font-weight: 700;
-        color: var(--darkBlue);
-        .icon {
-            font-size: 0.9rem;
-            margin-left: 0.2rem;
-            color: var(--grey);
-        }
-    }
-    .seller {
-        font-size: 1.7rem;
-        padding-left: 4rem;
-    }
-    .price {
-        font-size: 1.7rem;
-        padding-left: 4rem;
-        font-weight: 700;
-        .currency {
-            margin-left: 0.2rem;
-        }
-    }
-    .bookmark {
-        flex: 1;
-        margin-left: auto;
-        color: var(--orange);
-        font-size: 2rem;
-        text-align: center;
-        cursor: pointer;
-    }
-    a {
-        display: inline-block;
     }
 `;
 
@@ -99,61 +43,92 @@ export default function BookmarksPage() {
     const { bookmarks, removeBookmark } = useBookmarks();
     const [articles, setArticles] = useState([]);
 
-    useEffect(() => setArticles(bookmarks), []);
+    useEffect(() => setArticles(bookmarks), [bookmarks]);
 
     return (
-        <BookmarksPageStyles>
-            <div className="title">My bookmarks</div>
-            <HeaderStyles>
-                <div className="article-title">Article</div>
-                <div className="seller">Seller</div>
-                <div className="price">Price</div>
-            </HeaderStyles>
-            {articles.map(
-                ({ articleId, title, price, imageUrl, sellerName }) => (
-                    <BookmarkStyles key={articleId}>
-                        <Link href={`/article/${articleId}`}>
-                            <a>
-                                <div className="image-container">
-                                    <Image
-                                        src={imageUrl}
-                                        alt="article photo"
-                                        layout="fill"
-                                        className="img"
-                                    />
-                                </div>
-                            </a>
-                        </Link>
-                        <div className="article-title">
-                            <Link href={`/article/${articleId}`}>
-                                <a target="_blank">
-                                    <span>{title}</span>
-                                    <FaExternalLinkAlt className="icon" />
-                                </a>
-                            </Link>
-                        </div>
-                        <div className="seller">{sellerName}</div>
+        <>
+            <Head>
+                <title>Ricardo - Bookmarks</title>
+            </Head>
+            <BookmarksPageStyles>
+                <div className="title">My bookmarks</div>
+                {articles.length > 0 ? (
+                    <>
+                        <HeaderStyles>
+                            <div className="article-title">Article</div>
+                            <div className="seller">Seller</div>
+                            <div className="price">Price</div>
+                        </HeaderStyles>
+                        {articles.map(
+                            ({
+                                articleId,
+                                title,
+                                price,
+                                imageUrl,
+                                sellerName,
+                            }) => (
+                                <BookmarkStyles key={articleId}>
+                                    <Link href={`/article/${articleId}`}>
+                                        <a>
+                                            <div className="image-container">
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt="article photo"
+                                                    layout="fill"
+                                                    className="img"
+                                                />
+                                            </div>
+                                        </a>
+                                    </Link>
+                                    <div className="article-title">
+                                        <Link href={`/article/${articleId}`}>
+                                            <a target="_blank">
+                                                <span>{title}</span>
+                                                <FaExternalLinkAlt className="icon" />
+                                            </a>
+                                        </Link>
+                                    </div>
+                                    <div className="seller">{sellerName}</div>
 
-                        <div className="price">
-                            {price && (
-                                <>
-                                    <span>{price}</span>
-                                    <span className="currency">CHF</span>
-                                </>
-                            )}
-                        </div>
-                        <Link href={`/article/${articleId}`} passHref>
-                            <ButtonStyles>Buy now</ButtonStyles>
-                        </Link>
-                        <div
-                            className="bookmark"
-                            onClick={() => removeBookmark(articleId)}
-                        >
-                            <FaBookmark />
-                        </div>
-                    </BookmarkStyles>
-                )
-            )}
-        </BookmarksPageStyles>
+                                    <div className="price">
+                                        {price && (
+                                            <>
+                                                <span>{price}</span>
+                                                <span className="currency">
+                                                    CHF
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                    <Link
+                                        href={`/article/${articleId}`}
+                                        passHref
+                                    >
+                                        <ButtonStyles>Buy now</ButtonStyles>
+                                    </Link>
+                                    <div
+                                        className="bookmark"
+                                        onClick={() =>
+                                            removeBookmark(articleId)
+                                        }
+                                    >
+                                        <FaBookmark />
+                                    </div>
+                                </BookmarkStyles>
+                            )
+                        )}
+                    </>
+                ) : (
+                    <Message
+                        header="You don't have any saved articles yet"
+                        info="As soon as you see articles that you like, add them to your wish
+                    list! So you won't miss a sale."
+                        buttonText="LET'S START LOOKING"
+                        imageUrl="/empty.svg"
+                        buttonRoute="/"
+                    ></Message>
+                )}
+            </BookmarksPageStyles>
+        </>
     );
 }

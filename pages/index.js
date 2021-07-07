@@ -6,6 +6,7 @@ import FormStyles from '../styles/FormStyles';
 import ButtonStyles from '../styles/ButtonStyles';
 import Carousel from '../components/Carousel';
 import { useBookmarks } from '../lib/bookmarksState';
+import Head from 'next/head';
 
 const HomeStyles = styled.main`
     width: 100%;
@@ -40,23 +41,28 @@ export default function Home() {
     }
 
     return (
-        <HomeStyles>
-            <FormStyles onSubmit={handleSubmit}>
-                <fieldset className="input-container">
-                    <legend>Search text</legend>
-                    <input
-                        onChange={handleChange}
-                        placeholder="Search articles"
-                        type="text"
-                        value={searchQuery}
-                    />
-                </fieldset>
-                <ButtonStyles className="submit-btn" disabled={disabled}>
-                    <FaSearch className="icon" />
-                    <span>Search</span>
-                </ButtonStyles>
-            </FormStyles>
-            <Carousel title="Bookmarks" items={bookmarkedArticles} />
-        </HomeStyles>
+        <>
+            <Head>
+                <title>Ricardo - Buy & sell</title>
+            </Head>
+            <HomeStyles>
+                <FormStyles onSubmit={handleSubmit}>
+                    <fieldset className="input-container">
+                        <legend>Search text</legend>
+                        <input
+                            onChange={handleChange}
+                            placeholder="Search articles"
+                            type="text"
+                            value={searchQuery}
+                        />
+                    </fieldset>
+                    <ButtonStyles className="submit-btn" disabled={disabled}>
+                        <FaSearch className="icon" />
+                        <span>Search</span>
+                    </ButtonStyles>
+                </FormStyles>
+                <Carousel title="Bookmarks" items={bookmarkedArticles} />
+            </HomeStyles>
+        </>
     );
 }
