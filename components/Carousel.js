@@ -58,11 +58,11 @@ export default function Carousel({ items, title }) {
             ) : (
                 <>
                     <h3 className="info">
-                        You don't have any saved articles yet
+                        You don&apos;t have any saved articles yet
                     </h3>
                     <p className="message">
                         As soon as you see articles that you like, add them to
-                        your wish list! So you won't miss a sale.
+                        your wish list! So you won&apos;t miss a sale.
                     </p>
                 </>
             )}
