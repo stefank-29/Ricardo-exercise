@@ -61,14 +61,16 @@ export default function Card({ articleId, title, endDate, imageUrl, price }) {
                     </div>
                     <div className="article-info">
                         <p className="title">{title}</p>
-                        <div className="end-date">
-                            <span className="label">Ending on:</span>
-                            <span className="date">
-                                {format(new Date(endDate), 'yyyy-MM-dd')}
-                                {' at '}
-                                {format(new Date(endDate), 'hh:mm:ss')}
-                            </span>
-                        </div>
+                        {endDate && (
+                            <div className="end-date">
+                                <span className="label">Ending on:</span>
+                                <span className="date">
+                                    {format(new Date(endDate), 'yyyy-MM-dd')}
+                                    {' at '}
+                                    {format(new Date(endDate), 'hh:mm:ss')}
+                                </span>
+                            </div>
+                        )}
                         <div className="price">
                             <span>{price}</span>
                             {price && <span className="currency">CHF</span>}

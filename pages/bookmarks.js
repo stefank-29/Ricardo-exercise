@@ -99,7 +99,7 @@ export default function BookmarksPage() {
     const { bookmarks, removeBookmark } = useBookmarks();
     const [articles, setArticles] = useState([]);
 
-    useEffect(() => setArticles(bookmarks));
+    useEffect(() => setArticles(bookmarks), []);
 
     return (
         <BookmarksPageStyles>

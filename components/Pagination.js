@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import PaginationStyles from '../styles/PaginationStyles';
+import { PropTypes } from 'prop-types';
 
 export default function Pagination({ numOfPages, currPage }) {
     const router = useRouter();
@@ -50,3 +51,8 @@ export default function Pagination({ numOfPages, currPage }) {
         </PaginationStyles>
     );
 }
+
+Pagination.propTypes = {
+    numOfPages: PropTypes.number,
+    currPage: PropTypes.number,
+};
